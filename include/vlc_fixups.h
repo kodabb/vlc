@@ -239,8 +239,15 @@ static inline locale_t newlocale(int mask, const char * locale, locale_t base)
 }
 #endif
 
-#if !defined (HAVE_STATIC_ASSERT)
+#ifndef HAVE__STATIC_ASSERT
 # define _Static_assert(x, s) ((void) sizeof (struct { unsigned:-!(x); }))
+#endif
+
+#if !defined(HAVE_STATIC_ASSERT) && !defined(__cplusplus)
+# define static_assert _Static_assert
+#endif
+
+#if !defined(HAVE_STATIC_ASSERT_CXX) && defined(__cplusplus)
 # define static_assert _Static_assert
 #endif
 

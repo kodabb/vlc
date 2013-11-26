@@ -563,6 +563,30 @@ static_assert(1, "The impossible happened.");
   AC_MSG_RESULT([no])
 ])
 
+dnl C11 _Static_assert()
+AC_CACHE_CHECK([for _Static_assert compiler support],
+    [ac_cv__static_assert],
+    [AC_TRY_COMPILE([],
+        [_Static_assert(1, "The impossible happened.");],
+        ac_cv__static_assert=yes,
+        ac_cv__static_assert=no)])
+if test "${ac_cv__static_assert}" != "no"; then
+    AC_DEFINE([HAVE__STATIC_ASSERT], [1], [Define to 1 if compiler has intrinsic _Static_assert.])
+fi
+
+dnl C++11 static_assert()
+AC_CACHE_CHECK([for static_assert in <cassert>],
+    [ac_cv_static_assert_cxx],
+    [AC_LANG_PUSH([C++])
+     AC_TRY_COMPILE([#include <cassert>],
+        [static_assert(1, "The impossible happened.");],
+        ac_cv_static_assert_cxx=yes,
+        ac_cv_static_assert_cxx=no)
+     AC_LANG_POP([C++])])
+if test "${ac_cv_static_assert_cxx}" != "no"; then
+    AC_DEFINE([HAVE_STATIC_ASSERT_CXX], [1], [Define to 1 if <cassert> defines static_assert.])
+fi
+
 # Windows CE does not have strcoll()
 AC_FUNC_STRCOLL
 

@@ -17,6 +17,10 @@ BLURAY_CONF = --disable-examples  \
               --enable-libxml2    \
               --enable-bdjava
 
+ifdef HAVE_MACOSX
+JAVA_HOME_EXTRA=CFLAGS='-I$(JAVA_HOME)/include/darwin'
+endif
+
 $(TARBALLS)/libbluray-$(BLURAY_VERSION).tar.bz2:
 	$(call download,$(BLURAY_URL))
 
@@ -29,5 +33,5 @@ bluray: libbluray-$(BLURAY_VERSION).tar.bz2 .sum-bluray
 .bluray: bluray
 	cd $< && ./bootstrap
 	cd $< && $(HOSTVARS) ./configure $(BLURAY_CONF) $(HOSTCONF)
-	cd $< && $(MAKE) install
+	cd $< && $(MAKE) $(JAVA_HOME_EXTRA) && make install
 	touch $@

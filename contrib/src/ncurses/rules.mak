@@ -18,6 +18,7 @@ $(TARBALLS)/ncurses-$(NCURSES_VERSION).tar.gz:
 
 ncurses: ncurses-$(NCURSES_VERSION).tar.gz .sum-ncurses
 	$(UNPACK)
+	$(APPLY) $(SRC)/ncurses/datarootdir.patch
 	$(MOVE)
 
 .ncurses: ncurses
